@@ -117,12 +117,12 @@ char	('.'|'\\n'|'\\t')
 <PARSE>{char}	{
 				if(pragmaTokenFlag == 1)
 					printf("#char:%s\n",yytext);}
-<PARSE>\".*\"	{
-				if(pragmaTokenFlag == 1){
-					strncpy(tempString, yytext + 1, yyleng - 2);
-					tempString[yyleng - 2] = '\0';
-					printf("#string:%s\n",tempString);}
-				}
+<PARSE>\"([^\n"]|\\\")*\"	{
+					if(pragmaTokenFlag == 1){
+						strncpy(tempString, yytext + 1, yyleng - 2);
+						tempString[yyleng - 2] = '\0';
+						printf("#string:%s\n",tempString);}
+					}
 <PARSE>'.*'	{
 			fprintf(stderr, "Error at line %d: %s\n",lineCount, yytext);exit(1);}
 <PARSE>.	{
